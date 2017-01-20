@@ -1,14 +1,18 @@
 
 # rm(list=ls()) # Clean up the memory, if we want to rerun from scratch
-source("helpersSet1.R")
+# source("helpersSet1.R")
 
 getdata.fromscratch = 1
 
 website_used = "yahoo" # can be "yahoo" or other ( see help(getSymbols) ). Depending on the website we may need to change the stock tickers' representation
-mytickers = c("SPY", "AAPL","GOOG")  # Other tickers for example are "GOOG", "GS", "TSLA", "FB", "MSFT", 
+mytickers = c("SPY", "AAPL","YHOO","GOOG", "GS", "TSLA", "FB", "MSFT") 
 startDate = "2001-01-01"
 
 if (getdata.fromscratch){
+  # Get SPY first, to get all trading days
+  tmp<-as.matrix(try(getSymbols(Symbols="SPY",from = startDate,src = website_used, auto.assign=FALSE)))
+  StockPrices=matrix(rep(0,nrow(tmp)*length(mytickers)), ncol=length(mytickers))
+  colnames(StockPrices)<-mytickers; 
   rownames(StockPrices)<-rownames(tmp)
   StockVolume=StockPrices
   StockPrices[,1] <- tmp[,6]
@@ -42,6 +46,3 @@ if (getdata.fromscratch){
 } else {
   load("DataSet1.Rdata")
 }
-
-
-

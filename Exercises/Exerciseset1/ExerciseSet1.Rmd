@@ -1,4 +1,4 @@
-
+gzge
 ---
 title: "Exercise Set 1"
 author: "T. Evgeniou"
@@ -89,10 +89,11 @@ pnl_plot(SPY)
 3. *(Extra points)* What if we want to also see the returns of another company, say Yahoo!, in the same period? Can you get that data and report the statistics for Yahoo!'s stock, too? 
 
 **Your Answers here:**
-<br>
-<br>
-<br>
-<br>
+<br>1. This is done in the line #8 where the vector "mytickers" is created with two elements ("SPY" for S&P500 and "AAPL" for Apple)
+<br>2. We use round(100*sum(StockReturns[,2]),1) and round(100*mean(StockReturns[,2]),3) and round(100*sd(StockReturns[,2]),3). Indeed, Apple stock informations are in the second column of the matrix StockReturns so we jsut need to replace [,1] by [,2].
+<br>The results are 597.1, 0.148 and 2.388 respectively.
+<br>3. You need to go to dataSet1.R and add a 3rd argument to mytickers by writting mytickers = c("SPY", "AAPL","YHOO"), with "YHOO" being the ticker of Yahoo stock. Once its done, you must click on source and use the same three functions as in question 2 but with [,3] intead of [,2].
+<br> The results are 290.8, 0.072 and 3.018.
 
 <hr>
 <hr>
@@ -130,8 +131,16 @@ We can also transpose the matrix of returns to create a new "horizontal" matrix.
 2. Based on the help for the R function *apply* (`help(apply)`), can you create again the portfolio of S&P and Apple and plot the returns in a new figure below?
 
 **Your Answers here:**
-<br>
-<br>
+<br>1. We define the transposed matrix transposedData =t(StockRetruns) and then run nrow(transposedData) and ncol(transposedData). We get 3 and 4036.
+<br> 2. You need to use apply on transposedData and calculate the mean on the columns for all the rows. We define a new vector portfolio2 = apply(transposedData,2,mean). Then we draw the chart with names(portfolio2) <- rownames(transposedData) and pnl_plot(portfolio2)
+
+```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis',fig.align='center', fig=TRUE}
+transposedData = t(StockReturns)
+portfolio2 = apply(transposedData,2,mean)
+names(portfolio2) <- rownames(transposedData)
+pnl_plot(portfolio2)
+```
+
 <br>
 <br>
 
@@ -148,10 +157,18 @@ This is an important step and will get you to think about the overall process on
 2. *(Extra Exercise)*  Can you get the returns of a few companies and plot the returns of an equal weighted portfolio with those companies during some period you select? 
 
 **Your Answers here:**
+<br>1. We need to change the value of startDate on line #9 in dataSaet1.R. I already had 01/01/2001 as start date so I changed it to 01/03/2001 and run source.
+<br>2. You need to expand the mytickers vecor ith other values (Google, Tesla, Goldman Sachs, Facebook and Microsoft). Then you run source for dataSet1.R and use apply and pnl_plot.
 <br>
 <br>
-<br>
-<br>
+
+
+```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis',fig.align='center', fig=TRUE}
+
+portfolio3 = apply(StockReturns,1,mean)
+names(portfolio3) <- rownames(StockReturns)
+pnl_plot(portfolio3)
+```
 
 <hr>
 <hr>
@@ -182,8 +199,8 @@ myData + StockReturns[1:40,]
 ```
 
 **Your Answers here:**
-<br>
-<br>
+<br>1. By running this command I get 20 as an answer. Sum is adding one each time a line of myData is different from a line of StockReturns (limited to the first 20 lines). As StockReturns has 8 columns it is always different from myData (which has only 20 of them).
+<br>2. The values of the first 20 lines of SPY and AAPL will be doubled and all the other ones will be unchanged.
 <br>
 <br>
 
