@@ -1,3 +1,4 @@
+get
 ---
 title: 'Exercise Set 2: A $300 Billion Strategy'
 author: "T. Evgeniou"
@@ -159,9 +160,61 @@ iprint.df(show_data, scale=TRUE)
 
 **Answers**
 
+<br>
 *1. We need 6 components to explain more than 50% of variance
-*2. The first ten weights of composant 1 are: 5-yr T-Notes US, 10y T-Notes, Treasury Bonds, 2y T-Notes US, Canadian Bonds, Eurodollar, Euro-Bund, Euro-Bobl, Gilts UK, Euro-Schatz.
-*3. This corresponds to US, Canadian and European (German and British) interest rates. We notice that the component is very strongly correlated with US rates (and Canadian) and to a lesser extent to European ones.
+*
+*2. The first ten weights of composant 1 are: 5-yr T-Notes US, 10y T-Notes, Treasury Bonds, 2y T-Notes US, Canadian Bonds, Eurodollar, Euro-Bund, Euro-Bobl, Gilts UK, Euro-Schatz. The highest wieght is 0.93
+*
+*3. The first 10 compnents can be called :
+* Cpt1: US rates
+* Cpt2: G10 Currencies Vs dollar
+* Cpt3: European stocks
+* Cpt4: American stocks
+* Cpt5: European rates
+* Cpt6: Oil
+* Cpt7: Base metals
+* Cpt8: Agricultural 
+* Cpt9: Precious metals
+* Cpt10: Asian stocks
+*
+*4. First we compute, the crisis years
+*
+<br>
+
+```{r echo=TRUE, tidy=TRUE}
+
+crisis_data=futures_data[as.Date(rownames(futures_data))>"2007-10-01" & as.Date(rownames(futures_data)) < "2009-03-01",]
+
+Variance_Explained_Table_crisis_results<-PCA(crisis_data, graph=FALSE)
+Variance_Explained_Table_crisis<-Variance_Explained_Table_crisis_results$eig
+colnames(Variance_Explained_Table_crisis)<-c("Eigenvalue","Pct of explained variance", "Cumulative pct of explained variance")
+show_data_crisis = round(Variance_Explained_Table_crisis, 2)
+iprint.df(show_data_crisis)
+eigenvalues_crisis  <- Variance_Explained_Table_crisis[, "Eigenvalue"]
+
+
+```
+
+Then the pre-crisis years
+
+```{r eval = FALSE, echo=TRUE, tidy=TRUE}
+
+precrisis_data = futures_data[as.Date(rownames(futures_data)) > "2002-11-01" & 
+    as.Date(rownames(futures_data)) < "2007-10-01", ]
+
+Variance_Explained_Table_precrisis_results <- PCA(precrisis_data, graph = FALSE)
+Variance_Explained_Table_precrisis <- Variance_Explained_Table_precrisis_results$eig
+colnames(Variance_Explained_Table_precrisis) <- c("Eigenvalue", "Pct of explained variance", 
+    "Cumulative pct of explained variance")
+show_data_precrisis = round(Variance_Explained_Table_precrisis, 2)
+iprint.df(show_data_precrisis)
+eigenvalues_precrisis  <- Variance_Explained_Table_precrisis[, "Eigenvalue"]
+
+
+
+```
+
+*
 *
 *
 *
@@ -231,8 +284,8 @@ How does this compare with **existing CTA products** such as [this one from Soci
 **Answers**
 
 *
-*
-*
+*1.The code creates sequences of increasing length (starting at 10 and expanding by 20 until reaching 250). then vector of "signals" is created by adding the signs of the returns (i.e. +1 if positive and -1 if negative, 0 otherwise). Then, a test is done to check if the sum of the returns is not zero.
+* Then all the weights
 *
 *
 *
